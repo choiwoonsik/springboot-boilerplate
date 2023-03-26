@@ -109,6 +109,7 @@ jib {
     }
     container {
         jvmFlags = mutableListOf("-Xms2048m", "-Xmx2048m")
+        ports = listOf("9090", "8080")
     }
 }
 

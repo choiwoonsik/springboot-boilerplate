@@ -1,11 +1,13 @@
 package hackathon.boilerplate.jwt.authenticationfilter
 
+import hackathon.boilerplate.jwt.config.JwtConfig
 import hackathon.boilerplate.jwt.model.PrincipalUserDetails
 import hackathon.boilerplate.jwt.service.JwtProviderService
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
@@ -15,7 +17,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class CustomJwtAuthenticationFilter(
+class CustomJwtAuthorizationFilter(
     private val jwtProviderService: JwtProviderService,
 ) : OncePerRequestFilter() {
     private val log: Logger = LoggerFactory.getLogger(this::class.simpleName)
@@ -25,12 +27,17 @@ class CustomJwtAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        log.info("<Authentication(인증) 필터>")
+        log.info("<Authorization(인가) 필터>")
         try {
             request
                 .apply {
-                    if (!checkValidHeader()) {
-                        filterChain.doFilter(request, response)
+                    if (checkValidHeader().not()) {
+                        jwtProviderService.setErrorResponseMessage(
+                            response = response,
+                            status = HttpStatus.BAD_REQUEST,
+                            errorType = JwtConfig.HEADER_EXCEPTION,
+                            message = "잘못된 헤더입니다."
+                        )
                         return
                     }
                 }

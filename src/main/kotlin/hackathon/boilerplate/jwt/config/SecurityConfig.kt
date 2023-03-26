@@ -1,8 +1,8 @@
 package hackathon.boilerplate.jwt.config
 
-import hackathon.boilerplate.jwt.authenticationfilter.CustomJwtAuthenticationFilter
+import hackathon.boilerplate.jwt.authenticationfilter.CustomJwtAuthorizationFilter
 import hackathon.boilerplate.jwt.authenticationfilter.CustomUsernamePasswordAuthenticationFilter
-import hackathon.boilerplate.jwt.authenticationfilter.JwtAuthenticationExceptionFilter
+import hackathon.boilerplate.jwt.authenticationfilter.JwtAuthorizationExceptionFilter
 import hackathon.boilerplate.jwt.filter.corsFilter
 import hackathon.boilerplate.jwt.handler.CustomAccessDeniedHandler
 import hackathon.boilerplate.jwt.handler.CustomAuthenticationEntryPoint
@@ -34,8 +34,8 @@ class SecurityConfig(
     private val principalUserDetailsService: PrincipalUserDetailsService,
     private val customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
     private val customAccessDeniedHandler: CustomAccessDeniedHandler,
-    private val jwtAuthenticationExceptionFilter: JwtAuthenticationExceptionFilter,
-    private val customJwtAuthenticationFilter: CustomJwtAuthenticationFilter,
+    private val jwtAuthorizationExceptionFilter: JwtAuthorizationExceptionFilter,
+    private val customJwtAuthorizationFilter: CustomJwtAuthorizationFilter,
 ) {
     @Bean
     fun webSecurityCustomizer(): WebSecurityCustomizer {
@@ -67,8 +67,8 @@ class SecurityConfig(
             .httpBasic(Customizer.withDefaults())
             .addFilter(corsFilter())
             .addFilter(usernamePasswordAuthenticationFilter())
-            .addFilterBefore(customJwtAuthenticationFilter, BasicAuthenticationFilter::class.java)
-            .addFilterBefore(jwtAuthenticationExceptionFilter, CustomJwtAuthenticationFilter::class.java)
+            .addFilterBefore(customJwtAuthorizationFilter, BasicAuthenticationFilter::class.java)
+            .addFilterBefore(jwtAuthorizationExceptionFilter, CustomJwtAuthorizationFilter::class.java)
             .authorizeRequests()
             .antMatchers("/graphql").permitAll()
             .antMatchers("/graphiql").permitAll()

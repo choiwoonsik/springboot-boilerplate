@@ -14,12 +14,12 @@ class GlobalExceptionHandler {
     private val logger = LoggerFactory.getLogger(this::class.simpleName)
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(CustomRuntimeException::class)
+    @ExceptionHandler(RuntimeException::class)
     fun handleCustomException(
-        ex: CustomRuntimeException,
+        ex: CustomClientException,
         request: HttpServletRequest,
     ): ResponseEntity<ErrorResponse> {
-        logger.error(
+        logger.warn(
             """
             ========================================ERROR START========================================
             요청 URL: [${request.method} ${request.requestURI}]

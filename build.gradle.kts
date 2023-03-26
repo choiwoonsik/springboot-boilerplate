@@ -101,10 +101,10 @@ tasks.withType<Test> {
 
 jib {
     from {
-        image = "cimg/openjdk:17.0"
+        image = "arm64v8/eclipse-temurin:17.0.6_10-jdk-jammy"
     }
     to {
-        image = "peerfund/backend"
+        image = "dnstlr2933/boilerplate"
         tags = mutableSetOf("latest")
     }
     container {
@@ -121,14 +121,13 @@ querydsl {
 }
 
 flyway {
-    url = "jdbc:mysql://localhost:3306/peerfund?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=UTC"
+    url = "jdbc:mysql://localhost:33061/boilerplate?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=UTC"
     user = "root"
-    password = "root"
+    password = "boilerplate"
 }
 
 tasks.withType<com.netflix.graphql.dgs.codegen.gradle.GenerateJavaTask> {
     schemaPaths = mutableListOf("${projectDir}/src/main/resources/schema/schema.graphqls")
-//    packageName = "hackathon.peerfund.generated"
     generateDataTypes = true
     snakeCaseConstantNames = true
     language = "kotlin"

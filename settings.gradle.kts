@@ -1,1 +1,1 @@
-rootProject.name = "peerfund"
+rootProject.name = "boilerplate"

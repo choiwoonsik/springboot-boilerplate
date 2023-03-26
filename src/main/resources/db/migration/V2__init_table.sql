@@ -1,4 +1,4 @@
-CREATE TABLE peerfund.member
+CREATE TABLE boilerplate.member
 (
     id                  BIGINT          NOT NULL AUTO_INCREMENT,
     username            VARCHAR(255)    NOT NULL comment '유저 계정',
@@ -15,7 +15,7 @@ CREATE TABLE peerfund.member
     DEFAULT CHARSET=utf8mb4
     comment='회원 테이블';
 
-CREATE TABLE peerfund.role (
+CREATE TABLE boilerplate.role (
     id          BIGINT          NOT NULL AUTO_INCREMENT,
     role_type   VARCHAR(255)    NOT NULL,
     PRIMARY KEY (`id`),
@@ -26,7 +26,7 @@ CREATE TABLE peerfund.role (
 
 
 
-INSERT IGNORE INTO peerfund.role(role_type)
+INSERT IGNORE INTO boilerplate.role(role_type)
 VALUES  ('ROLE_USER'),
         ('ROLE_ADMIN')
 ;

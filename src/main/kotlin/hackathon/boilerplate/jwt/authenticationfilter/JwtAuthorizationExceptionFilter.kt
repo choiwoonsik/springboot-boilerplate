@@ -6,13 +6,11 @@ import hackathon.boilerplate.jwt.service.JwtProviderService
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
 import org.springframework.http.HttpStatus
-import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-@Component
 class JwtAuthorizationExceptionFilter(
     private val jwtProviderService: JwtProviderService
 ) : OncePerRequestFilter() {

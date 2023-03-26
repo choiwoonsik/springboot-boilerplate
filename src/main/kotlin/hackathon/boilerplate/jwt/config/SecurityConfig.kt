@@ -34,8 +34,6 @@ class SecurityConfig(
     private val principalUserDetailsService: PrincipalUserDetailsService,
     private val customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
     private val customAccessDeniedHandler: CustomAccessDeniedHandler,
-    private val jwtAuthorizationExceptionFilter: JwtAuthorizationExceptionFilter,
-    private val customJwtAuthorizationFilter: CustomJwtAuthorizationFilter,
 ) {
     @Bean
     fun webSecurityCustomizer(): WebSecurityCustomizer {
@@ -67,8 +65,8 @@ class SecurityConfig(
             .httpBasic(Customizer.withDefaults())
             .addFilter(corsFilter())
             .addFilter(usernamePasswordAuthenticationFilter())
-            .addFilterBefore(customJwtAuthorizationFilter, BasicAuthenticationFilter::class.java)
-            .addFilterBefore(jwtAuthorizationExceptionFilter, CustomJwtAuthorizationFilter::class.java)
+            .addFilterBefore(CustomJwtAuthorizationFilter(jwtProviderService), BasicAuthenticationFilter::class.java)
+            .addFilterBefore(JwtAuthorizationExceptionFilter(jwtProviderService), CustomJwtAuthorizationFilter::class.java)
             .authorizeRequests()
             .antMatchers("/graphql").permitAll()
             .antMatchers("/graphiql").permitAll()
